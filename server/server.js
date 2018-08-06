@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {Family} = require('../models/family');
-const {mongoose} = require('../db/mongoose');
-
+const { Family } = require('../models/family');
+const { mongoose } = require('../db/mongoose');
+const { ObjectId } = require('mongodb');
 var app = express();
 app.use(bodyParser.json());
 
@@ -17,6 +17,31 @@ app.post('/family', (req,res)=>{
         res.send(doc)        
     }, (err)=>{
         family.status(404).send(err);
+    });
+});
+
+app.get('/family',(req, res)=>{
+    Family.find().then((data)=>{
+        res.send({data})
+    }, (err)=>{
+            res.status(400).send(err);
+    });
+});
+
+app.get('/family/:id', (req, res)=>{
+    var id = req.params.id;
+console.log(id);
+
+    if (!ObjectId.isValid(id)) {
+        return res.status(404).send();
+    }
+    Family.findById(id).then((data)=>{
+        if (!data) {
+            return res.status(404).send();
+        }
+        res.send({data});
+    }).catch((err)=>{
+        res.status(400).send();
     });
 });
 
