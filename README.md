@@ -1,2 +1,2 @@
-# DELETEAPI-using-NODEJS
-I create a DELETE API for delete the data by using the findByIdAndRemove() method from user to our database MONGODB
+# PATCHAPI-using-NODEJS
+I create a PATCH API for update the data by using the findByIdAndupdate() method from user to our database MONGODB
