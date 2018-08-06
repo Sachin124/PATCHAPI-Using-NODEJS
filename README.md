@@ -1,2 +1,2 @@
-# POSTAPI-using-NODEJS
-I create a post api for storing the data from user to our database MONGODB
+# GETAPI-using-NODEJS
+I create a GET API for Fetching the data from user to our database MONGODB
