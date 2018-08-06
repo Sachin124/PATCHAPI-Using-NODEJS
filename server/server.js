@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Family } = require('../models/family');
@@ -59,6 +60,28 @@ app.delete('/family/:id', (req, res)=>{
     }).catch((err)=>{
         res.status(400).send();
     });
+});
+
+
+app.patch('/family/:id',(req, res)=>{
+    var id = req.params.id;
+    var body = _.pick(req.body, ["name", "age"]);
+    if(!ObjectID.isValid(id)){
+        return res.status(404).send();
+    }
+
+    
+    Family.findByIdAndUpdate(id, {$set: body}, {new: true}).then((doc)=>{
+        if (!doc) {
+            return res.status(404).send();
+        }
+
+        res.send({doc});
+    }).catch((err)=>{
+        res.status(400).send();
+    });
+    
+
 });
 
 app.listen(3000, ()=>{
