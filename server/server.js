@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Family } = require('../models/family');
 const { mongoose } = require('../db/mongoose');
-const { ObjectId } = require('mongodb');
+const { ObjectID } = require('mongodb');
 var app = express();
 app.use(bodyParser.json());
 
@@ -32,7 +32,7 @@ app.get('/family/:id', (req, res)=>{
     var id = req.params.id;
 console.log(id);
 
-    if (!ObjectId.isValid(id)) {
+    if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
     Family.findById(id).then((data)=>{
@@ -40,6 +40,22 @@ console.log(id);
             return res.status(404).send();
         }
         res.send({data});
+    }).catch((err)=>{
+        res.status(400).send(err);
+    });
+});
+
+app.delete('/family/:id', (req, res)=>{
+    var id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    Family.findByIdAndRemove(id).then((doc)=>{
+        if (!doc) {
+            return res.status(404).send();
+        }
+        res.send({doc});
     }).catch((err)=>{
         res.status(400).send();
     });
